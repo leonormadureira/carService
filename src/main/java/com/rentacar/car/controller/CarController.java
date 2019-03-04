@@ -34,6 +34,13 @@ public class CarController {
 
     }
 
+    @RequestMapping(method = RequestMethod.GET, path = "/carService/searchCars")
+    public List<Car> getCarsByUserId(Long user_id){
+
+        return service.getCarsByUserId(user_id);
+
+    }
+
     @RequestMapping(method = RequestMethod.DELETE, path = "/carService")
     public ResponseEntity deleteCar(@RequestParam Long id){
 
@@ -43,7 +50,7 @@ public class CarController {
 
     }
 
-    @RequestMapping(method = RequestMethod.PUT, path = "/carService/bookcar")
+    @RequestMapping(method = RequestMethod.PUT, path = "/carService/rentcar")
     public Car bookACar(@RequestParam Long id, Long user_id){
 
         return service.bookCar(id, user_id);

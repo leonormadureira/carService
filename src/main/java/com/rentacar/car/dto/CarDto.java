@@ -1,7 +1,5 @@
 package com.rentacar.car.dto;
 
-import lombok.Data;
-
 public class CarDto {
 
     public Long id;

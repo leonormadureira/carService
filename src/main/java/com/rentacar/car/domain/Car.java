@@ -1,7 +1,6 @@
 package com.rentacar.car.domain;
 
 import lombok.*;
-import lombok.Data;
 
 import javax.persistence.*;
 

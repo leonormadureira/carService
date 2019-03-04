@@ -75,6 +75,12 @@ public class CarServiceImplementation {
 
     }
 
+    public List<Car> getCarsByUserId(Long user_id){
+
+        return repository.findCarsByUserId(user_id);
+
+    }
+
     public void deleteCar(Long id) {
 
         if (id == null) {
