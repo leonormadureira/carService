@@ -3,10 +3,12 @@ package com.rentacar.car.repository;
 import com.rentacar.car.domain.Car;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface CarRepository extends CrudRepository <Car, Long> {
+@Repository
+public interface CarRepository extends CrudRepository<Car, Long> {
 
     @Query(value = "SELECT * FROM Car WHERE is_available = ?1", nativeQuery = true)
     List<Car> findByIs_available(boolean is_available);

@@ -1,6 +1,6 @@
 package com.rentacar.car.dto;
 
-public class CarDto {
+public class InputBody {
 
     public Long id;
     public String brand;
@@ -8,10 +8,6 @@ public class CarDto {
     public boolean is_available;
     public Long user_id;
 
-    @Override
-    public String toString() {
-        return "CarDto [id = " + id + ", brand = " + brand + ", model = " + model + ", is_available = "+ is_available + ", user_id = " + user_id + "]";
-    }
 
     public Long getId() {
         return id;

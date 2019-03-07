@@ -2,17 +2,20 @@ package com.rentacar.car.service.serviceImplementation;
 
 
 import com.rentacar.car.domain.Car;
-import com.rentacar.car.dto.CarDto;
+import com.rentacar.car.dto.InputBody;
 import com.rentacar.car.repository.CarRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@Slf4j
 public class CarServiceImplementation {
 
-    private final CarRepository repository;
+    private CarRepository repository;
     public Long id;
     public String brand;
     public String model;
@@ -24,7 +27,7 @@ public class CarServiceImplementation {
         this.repository = repository;
     }
 
-    public Car createCar(CarDto carDto) {
+    public Car createCar(InputBody carDto) {
 
         Car newCar = new Car();
 
@@ -32,14 +35,15 @@ public class CarServiceImplementation {
         newCar.setBrand(carDto.getBrand());
         newCar.setModel(carDto.getModel());
 
-        repository.save(newCar);
+        Car savedCar = repository.save(newCar);
 
-        System.out.println(newCar);
-        return newCar;
+        log.info(String.valueOf(savedCar));
+
+        return savedCar;
 
     }
 
-    public List<Car> getCar(Long id, boolean is_available) {
+    public List<Car> getCar (Long id, boolean is_available) {
 
         if (id != null) {
 
@@ -47,14 +51,16 @@ public class CarServiceImplementation {
 
             if (list_cars_found_by_id.size() == 0) {
 
-                System.out.println("\nNo cars found with id: " + id);
+                log.error("No cars found with id: " + id);
+
+                return repository.findByCarId(id);
 
             } else {
 
-                System.out.println(list_cars_found_by_id);
-            }
+                log.info(String.valueOf(list_cars_found_by_id));
 
-            return list_cars_found_by_id;
+                return list_cars_found_by_id;
+            }
 
         } else {
 
@@ -62,11 +68,11 @@ public class CarServiceImplementation {
 
             if (list_cars_found_by_availability.size() == 0) {
 
-                System.out.println("\nNo cars found with availability: " + is_available);
+                log.error("No cars found with availability: " + is_available);
 
             } else {
 
-                System.out.println(list_cars_found_by_availability);
+                log.info(String.valueOf(list_cars_found_by_availability));
             }
 
             return list_cars_found_by_availability;
@@ -77,6 +83,15 @@ public class CarServiceImplementation {
 
     public List<Car> getCarsByUserId(Long user_id){
 
+        List<Car> carsRentedByUserId = repository.findCarsByUserId(user_id);
+
+        if (carsRentedByUserId.size() == 0){
+
+            log.error("User_id: " + user_id + " is not renting any cars at the moment.");
+
+            return null;
+        }
+
         return repository.findCarsByUserId(user_id);
 
     }
@@ -84,18 +99,18 @@ public class CarServiceImplementation {
     public void deleteCar(Long id) {
 
         if (id == null) {
-            System.out.println("\nNo id provided.");
+            log.error("No id provided.");
         }
 
         List<Car> list_cars_to_delete = repository.findByCarId(id);
 
         if (list_cars_to_delete.size() == 0) {
-            System.out.println("\nNo cars found with id: " + id);
+            log.error("No cars found with id: " + id);
         }
 
         for (Car car_to_delete : list_cars_to_delete) {
 
-            System.out.println(car_to_delete);
+            log.info(car_to_delete + " will be deleted.");
             repository.delete(car_to_delete);
 
         }
@@ -103,27 +118,62 @@ public class CarServiceImplementation {
 
     public Car bookCar(Long id, Long user_id) {
 
-        List<Car> list_car_found_by_id = repository.findByCarId(id);
+        List<Car> list_cars_found_by_id = repository.findByCarId(id);
 
-        Car car = list_car_found_by_id.get(0);
+        if (list_cars_found_by_id.size() == 0) {
 
-        car.setIs_available(false);
-        car.setUser_id(user_id);
+            log.error("No cars found with id: " + id + ". Please choose another car.");
 
-        return repository.save(car);
+            return null;
 
+        } else {
+
+            Car car = list_cars_found_by_id.get(0);
+
+            if (car.getIs_available()) {
+
+                car.setIs_available(false);
+                car.setUser_id(user_id);
+
+                log.info(String.valueOf(car));
+
+                return repository.save(car);
+
+            } else
+
+                log.error("Selected car is not available. Please choose another car.");
+
+            return car;
+        }
     }
 
     public Car releaseCar(Long id) {
 
-        List<Car> list_car_found_by_id = repository.findByCarId(id);
+        List<Car> list_cars_found_by_id = repository.findByCarId(id);
 
-        Car car = list_car_found_by_id.get(0);
+        if (list_cars_found_by_id.size() == 0) {
 
-        car.setIs_available(true);
-        car.setUser_id(null);
+            log.error("No cars found with id: " + id + ". Please choose another car.");
 
-        return repository.save(car);
+            return null;
+
+        } else {
+
+            Car car = list_cars_found_by_id.get(0);
+
+            if (car.getIs_available()){
+
+                log.error("The selected car is not rented at the moment. Please choose another car.");
+
+                return null;
+
+            } else
+
+            car.setIs_available(true);
+            car.setUser_id(null);
+
+            return repository.save(car);
+        }
 
     }
 
