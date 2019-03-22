@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -116,7 +115,7 @@ public class CarServiceImplementation {
         }
     }
 
-    public Car bookCar(Long id, Long user_id) {
+    public Car bookCar (Long id, Long user_id) throws IllegalArgumentException {
 
         List<Car> list_cars_found_by_id = repository.findByCarId(id);
 

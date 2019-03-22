@@ -1,11 +1,9 @@
 package com.rentacar.car.service;
 
 import com.rentacar.car.domain.Car;
-import com.rentacar.car.dto.CarDto;
 import com.rentacar.car.dto.InputBody;
 import com.rentacar.car.repository.CarRepository;
 import com.rentacar.car.service.serviceImplementation.CarServiceImplementation;
-import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,6 +66,7 @@ public class CarServiceTest {
         Mockito.when(this.repository.save(Mockito.any())).thenReturn(freeCar);
     }
 
+    @Test
     public void createCarTest() {
 
         InputBody inputCar = new InputBody();

@@ -21,46 +21,46 @@ public class CarController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/carService")
-    public Car createCar(@RequestBody InputBody requestBodyRequest){
+    public Car createCar(@RequestBody InputBody requestBody){
 
-        return service.createCar(requestBodyRequest);
+        return service.createCar(requestBody);
 
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/carService")
-    public List<Car> getCar(@RequestBody InputBody requestBodyRequest){
+    public List<Car> getCar(@RequestBody InputBody requestBody){
 
-        return service.getCar(requestBodyRequest.getId(), requestBodyRequest.getIs_available());
+        return service.getCar(requestBody.getId(), requestBody.getIs_available());
 
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/carService/searchCars")
-    public List<Car> getCarsByUserId(@RequestBody InputBody requestBodyRequest){
+    public List<Car> getCarsByUserId(@RequestBody InputBody requestBody){
 
-        return service.getCarsByUserId(requestBodyRequest.getUser_id());
+        return service.getCarsByUserId(requestBody.getUser_id());
 
     }
 
     @RequestMapping(method = RequestMethod.DELETE, path = "/carService")
-    public ResponseEntity deleteCar(@RequestBody InputBody requestBodyRequest){
+    public ResponseEntity deleteCar(@RequestBody InputBody requestBody){
 
-        service.deleteCar(requestBodyRequest.getId());
+        service.deleteCar(requestBody.getId());
 
         return ResponseEntity.ok(HttpStatus.OK);
 
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "/carService/rentcar")
-    public Car bookCar(@RequestBody InputBody requestBodyRequest){
+    public Car bookCar(@RequestBody InputBody requestBody) throws IllegalArgumentException {
 
-        return service.bookCar(requestBodyRequest.getId(), requestBodyRequest.getUser_id());
+        return service.bookCar(requestBody.getId(), requestBody.getUser_id());
 
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "/carService/releasecar")
-    public Car releaseCar(@RequestBody InputBody requestBodyRequest){
+    public Car releaseCar(@RequestBody InputBody requestBody){
 
-        return service.releaseCar(requestBodyRequest.getId());
+        return service.releaseCar(requestBody.getId());
 
     }
 
