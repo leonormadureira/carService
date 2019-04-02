@@ -28,16 +28,16 @@ public class CarController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/carService")
-    public List<Car> getCar(@RequestBody InputBody requestBody){
+    public List<Car> getCar(@RequestParam Long id, Boolean is_available){
 
-        return service.getCar(requestBody.getId(), requestBody.getIs_available());
+        return service.getCar(id, is_available);
 
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/carService/searchCars")
-    public List<Car> getCarsByUserId(@RequestBody InputBody requestBody){
+    public List<Car> getCarsByUserId(@RequestParam Long user_id){
 
-        return service.getCarsByUserId(requestBody.getUser_id());
+        return service.getCarsByUserId(user_id);
 
     }
 

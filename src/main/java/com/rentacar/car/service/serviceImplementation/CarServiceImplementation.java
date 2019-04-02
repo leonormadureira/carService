@@ -42,7 +42,7 @@ public class CarServiceImplementation {
 
     }
 
-    public List<Car> getCar (Long id, boolean is_available) {
+    public List<Car> getCar (Long id, Boolean is_available) {
 
         if (id != null) {
 
